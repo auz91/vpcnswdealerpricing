@@ -1,0 +1,80 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+span {
+  font-size:10px;
+}
+
+.vpcborder {
+  border-color:#EDBC73;
+  border-width:1px;
+}
+
+.nav-link.active {
+  background-color: #EDBC73 !important;  /* Use !important to override default Bootstrap styles */
+  color: rgb(0, 0, 0) !important;  /* Optional: changing text color for better readability */
+}
+
+.nav-link {
+  background-color: #FFFFF !important;  /* Use !important to override default Bootstrap styles */
+  color: rgb(0, 0, 0) !important;  /* Optional: changing text color for better readability */
+  border-width: 2px;
+}
+
+.vpcbg {
+  background-color:#EDBC73;
+}
+
+.dropdown-toggle {
+  white-space:pre-wrap!important;
+}
+
+.custom-dropdown-toggle {
+    border-color: #EDBC73 !important; /* example green color */
+    background-color: #ffffff !important; /* example green color */
+    color: rgb(0, 0, 0) !important;
+    padding: 8px 16px !important;
+    border-radius: 0.5rem !important;
+    border-width: 2px !important;
+    width:100%;
+    text-align:left;
+    text-wrap:wrap;
+
+  }
+
+  .custom-dropdown-toggle-2 {
+    border-color: #EDBC73 !important; /* example green color */
+    background-color: #EDBC73 !important; /* example green color */
+    color: rgb(0, 0, 0) !important;
+    padding: 8px 16px !important;
+    border-radius: 0.5rem !important;
+    border-width: 2px !important;
+    width:100%;
+    text-align:left;
+    text-wrap:wrap;
+
+  }
+
+  .custom-dropdown-toggle:hover {
+    border-color: #000000 !important; /* example green color */
+    background-color: #EDBC73  !important; /* example green color */
+    color: rgb(0, 0, 0) !important;
+    padding: 8px 16px !important;
+    border-radius: 0.5rem !important;
+    border-width: 2px !important;
+  }
+
+  .custom-dropdown-toggle-2:hover {
+    border-color: #000000 !important; /* example green color */
+    background-color: #ffdca8  !important; /* example green color */
+    color: rgb(0, 0, 0) !important;
+    padding: 8px 16px !important;
+    border-radius: 0.5rem !important;
+    border-width: 2px !important;
+  }
+
+  .thin-line {
+    height: 1px; /* or 2px if you need it slightly thicker */
+    background-color: black; /* or any color you prefer */
+}
