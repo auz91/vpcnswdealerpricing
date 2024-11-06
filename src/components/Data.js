@@ -168,7 +168,7 @@ const panels = [
       {
         id: 1,
         panelbrand: 'AIKO 470W - AIKO-A470-MAH54Mw',
-        cost: 550,
+        cost: 724,
         watts: 470,
       },
 
