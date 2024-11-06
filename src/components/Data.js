@@ -171,6 +171,12 @@ const panels = [
         cost: 724,
         watts: 470,
       },
+      {
+        id: 2,
+        panelbrand: 'LONGI 440W - LR5-54HTH-440M',
+        cost: 646,
+        watts: 440,
+      },
 
 ]
 
