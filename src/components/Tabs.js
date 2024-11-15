@@ -15,7 +15,10 @@ function SwitchTabs({
     deposit, setDeposit,
     paymentMethod, selectedPaymentMethod, setSelectedPaymentMethod, 
     batteryRebate, setBatteryRebate,
-    quantities, handleChange, totalSum, extras}) 
+    quantities, handleChange, totalSum, extras,
+    plentiTerm,
+    setPlentiTerm,
+}) 
     {
   return (
     <Tabs
@@ -40,7 +43,7 @@ function SwitchTabs({
   
                   <div className="p-2 self-center"><InverterSelect inverters={inverters} selectedInverter={selectedInverter} setSelectedInverter={setSelectedInverter} />
         </div>
-                  <div className="p-2 self-center"><p className="pr-5">Please select an additional inverter (if required):</p>
+                  <div className="p-2 self-center"><p className="pr-5">Additional inverter (if required):</p>
                   </div>
   
   
@@ -51,10 +54,6 @@ function SwitchTabs({
         </div>
   
                   <div className="p-2 self-center"><NumberPanels numberPanels={numberPanels} setNumberPanels={setNumberPanels}/>
-                  </div>
-                  <div className="p-2 self-center"><h5>The system size selected is: </h5>
-                  </div>
-                  <div className="p-2 self-center"><h5><b>{sysSize}</b></h5>
                   </div>
   
                   <div className="p-2 self-center"><h5>Select a battery model: </h5>
@@ -89,7 +88,9 @@ function SwitchTabs({
                         <PaymentMethod 
                           paymentMethod={paymentMethod} 
                           selectedPaymentMethod={selectedPaymentMethod} 
-                          setSelectedPaymentMethod={setSelectedPaymentMethod} 
+                          setSelectedPaymentMethod={setSelectedPaymentMethod}
+                          plentiTerm={plentiTerm}
+                          setPlentiTerm={setPlentiTerm}
                         />
                       </div>
                     </>

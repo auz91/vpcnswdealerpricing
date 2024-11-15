@@ -1,5 +1,6 @@
 import React from 'react';
 import Dropdown from 'react-bootstrap/Dropdown';
+import { plentiTerms } from './Data';
 
 function Deposit({ deposit, setDeposit }) {
   const handleChange = (e) => {
@@ -25,24 +26,53 @@ function Deposit({ deposit, setDeposit }) {
   );
 }
 
-function PaymentMethod({ paymentMethod, selectedPaymentMethod, setSelectedPaymentMethod }) {
+function PaymentMethod({ 
+  paymentMethod, 
+  selectedPaymentMethod, 
+  setSelectedPaymentMethod,
+  plentiTerm,
+  setPlentiTerm 
+}) {
   return (
-    <Dropdown>
-      <Dropdown.Toggle id="dropdown-basic"  className="custom-dropdown-toggle-2">
-        {selectedPaymentMethod ? selectedPaymentMethod.method : 'Select Payment Method'} 
-      </Dropdown.Toggle>
+    <>
+      <Dropdown>
+        <Dropdown.Toggle id="dropdown-basic" className="custom-dropdown-toggle-2">
+          {selectedPaymentMethod ? selectedPaymentMethod.method : 'Select Payment Method'} 
+        </Dropdown.Toggle>
 
-      <Dropdown.Menu>
-        {paymentMethod.map((paymentMethod) => (
-          <Dropdown.Item
-            key={paymentMethod.id}
-            onClick={() => setSelectedPaymentMethod(paymentMethod)}  // Update state in App.js on click
-          >
-            {paymentMethod.method}
-          </Dropdown.Item>
-        ))}
-      </Dropdown.Menu>
-    </Dropdown>
+        <Dropdown.Menu>
+          {paymentMethod.map((method) => (
+            <Dropdown.Item
+              key={method.id}
+              onClick={() => setSelectedPaymentMethod(method)}
+            >
+              {method.method}
+            </Dropdown.Item>
+          ))}
+        </Dropdown.Menu>
+      </Dropdown>
+
+      {selectedPaymentMethod?.isPlenti && (
+        <div className="mt-2">
+          <Dropdown>
+            <Dropdown.Toggle id="plenti-term-dropdown" className="custom-dropdown-toggle-2">
+              {plentiTerm ? `${plentiTerm.months} months` : 'Select Term'}
+            </Dropdown.Toggle>
+
+            <Dropdown.Menu>
+              {plentiTerms.map((term) => (
+                <Dropdown.Item
+                  key={term.months}
+                  onClick={() => setPlentiTerm(term)}
+                >
+                  {term.months} months
+                </Dropdown.Item>
+              ))}
+            </Dropdown.Menu>
+          </Dropdown>
+        </div>
+      )}
+    </>
   );
 }
 

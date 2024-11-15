@@ -29,24 +29,25 @@ const paymentMethod = [
         multiplier: 1,
     },
     {
-      id: 11,
-      method: 'HEUF Green Loan',
-      multiplier: 1,
-  },
-    {
       id: 1,
+      method: 'HEUF - Plenti Green Loan',
+      multiplier: 1,
+      isPlenti: true,
+    },
+    {
+      id: 2,
       method: 'Humm 24 Months',
       multiplier: 1.135,
       months: 24,
   },
     {
-      id: 2,
+      id: 3,
       method: 'Humm 36 Months',
       multiplier: 1.165,
       months: 36,
   },
     {
-      id: 3,
+      id: 4,
       method: 'Humm 60 Months',
       multiplier: 1.265,
       months: 60,
@@ -274,8 +275,19 @@ const battery = [
                         },
 
 ]
-  export { inverters };
-  export { panels };
-  export { battery };
-  export { paymentMethod };
+
+const plentiTerms = [
+    { months: 36, interestRate: 6.65 },
+    { months: 48, interestRate: 6.65 },
+    { months: 60, interestRate: 6.65 },
+    { months: 72, interestRate: 6.65 },
+    { months: 84, interestRate: 6.65 },
+    { months: 96, interestRate: 6.65 },
+    { months: 108, interestRate: 6.65 },
+    { months: 120, interestRate: 7.15 },
+    { months: 132, interestRate: 7.65 },
+    { months: 144, interestRate: 7.65 },
+];
+
+export { inverters, panels, battery, paymentMethod, plentiTerms };
   

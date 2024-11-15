@@ -37,6 +37,7 @@ function App() {
   const [batteryRebate, setBatteryRebate] = useState(0);
   const [deposit, setDeposit] = useState(null);
   const [selectedPaymentMethod, setSelectedPaymentMethod] = useState(null);
+  const [plentiTerm, setPlentiTerm] = useState(null);
 
   // Derived calculations
   const sysSize = selectedPanel ? [numberPanels * selectedPanel.watts/1000 + 'kW'] : 0;
@@ -79,17 +80,81 @@ function App() {
     Intl.NumberFormat("en-US", options).format(rawSystemCost) : 0;
 
   // Finance calculations
+  const getPaymentMonths = () => {
+    if (selectedPaymentMethod?.isPlenti) {
+      return plentiTerm?.months || 0;
+    }
+    return selectedPaymentMethod?.months || 0;
+  };
+
+  // Calculate monthly interest rate (annual rate / 12)
+  const getMonthlyInterestRate = () => {
+    if (selectedPaymentMethod?.isPlenti && plentiTerm) {
+      return plentiTerm.interestRate / 100 / 12;
+    }
+    return 0;
+  };
+
   const residualpayment = selectedPaymentMethod ? 
     (totalCost - deposit) * selectedPaymentMethod.multiplier : 0;
 
-  const weeklypayment = selectedPaymentMethod ? 
-    (residualpayment/(4.35*selectedPaymentMethod.months)) + 1.5 : 0;
-  
-  const agreementTotal = Number(residualpayment) + Number(deposit);
-  
-  const effInterestRate = selectedPaymentMethod ? 
-    (Number(agreementTotal) - Number(totalCost))/
-    ((selectedPaymentMethod.months/12)*(Number(totalCost)))*100 : 0;
+  // Calculate monthly payment using amortization formula
+  const calculateMonthlyPayment = () => {
+    if (!selectedPaymentMethod?.isPlenti || !plentiTerm) return 0;
+
+    const principal = residualpayment;
+    const monthlyRate = getMonthlyInterestRate();
+    const numberOfPayments = getPaymentMonths();
+    
+    if (monthlyRate === 0 || numberOfPayments === 0) return 0;
+
+    // Add $400 credit assistance fee to the principal
+    const totalPrincipal = principal + 400;
+
+    // Amortization formula: PMT = P * (r(1+r)^n)/((1+r)^n-1)
+    // Where: P = Principal, r = Monthly Interest Rate, n = Number of Payments
+    const baseMonthlyPayment = 
+      totalPrincipal * 
+      (monthlyRate * Math.pow(1 + monthlyRate, numberOfPayments)) / 
+      (Math.pow(1 + monthlyRate, numberOfPayments) - 1);
+
+    // Add $8.99 monthly account management fee
+    return baseMonthlyPayment + 8.99;
+  };
+
+  // Calculate weekly payment
+  const weeklypayment = useMemo(() => {
+    if (!selectedPaymentMethod) return 0;
+    
+    if (selectedPaymentMethod.isPlenti) {
+      // Convert monthly payment to weekly (monthly * 12 / 52)
+      return calculateMonthlyPayment() * 12 / 52;
+    }
+
+    // Original calculation for non-Plenti payment methods
+    return (residualpayment/(4.35*getPaymentMonths())) + 1.5;
+  }, [selectedPaymentMethod, residualpayment, getPaymentMonths]);
+
+  // Calculate total amount to be paid
+  const agreementTotal = useMemo(() => {
+    if (!selectedPaymentMethod) return 0;
+    
+    // For all payment methods, including Plenti, the supply agreement total
+    // should be deposit + payment plan approval amount
+    return Number(residualpayment) + Number(deposit);
+    
+  }, [selectedPaymentMethod, deposit, residualpayment]);
+
+  // Add a new calculation for the total cost including fees (for display purposes if needed)
+  const totalPaymentsWithFees = useMemo(() => {
+    if (selectedPaymentMethod?.isPlenti && plentiTerm) {
+      const monthlyPayment = calculateMonthlyPayment();
+      const months = getPaymentMonths();
+      // This includes all fees and payments
+      return (monthlyPayment * months) + Number(deposit);
+    }
+    return agreementTotal;
+  }, [selectedPaymentMethod, plentiTerm, deposit, agreementTotal]);
 
   return (
     <div className="App">
@@ -99,105 +164,95 @@ function App() {
         <h5>November 2024</h5>
       </div>
 
-          <div class="
-          flex-row
-          p-4
-          mb-3 
-          md:w-full
-          lg:w-full
-          xl:w-1/2
-          md:m-auto">
-
-          <div class="flex-initial shrink m-auto w-full l:w-1/2 h-auto rounded-xl mr-5">
+      <div className="flex flex-row w-full p-4 gap-4">
+        <div className="w-1/2">
           <SwitchTabs 
-          panels={panels}
-          selectedPanel={selectedPanel}
-          setSelectedPanel={setSelectedPanel}
-          inverters={inverters}
-          selectedInverter={selectedInverter}
-          setSelectedInverter={setSelectedInverter}
-          additionalSelectedInverter={additionalSelectedInverter}
-          setAdditionalSelectedInverter={setAdditionalSelectedInverter}
-          numberPanels={numberPanels}
-          setNumberPanels={setNumberPanels}
-          sysSize={sysSize}
-          battery={battery}
-          selectedBattery={selectedBattery}
-          setSelectedBattery={setSelectedBattery}
-          deposit={deposit}
-          setDeposit={setDeposit}
-          paymentMethod={paymentMethod}
-          selectedPaymentMethod={selectedPaymentMethod}
-          setSelectedPaymentMethod={setSelectedPaymentMethod}
-          quantities={quantities} 
-          handleChange={handleChange} 
-          totalSum={totalSum}
-          extras={extras}
-          batteryRebate={batteryRebate}
-          setBatteryRebate={setBatteryRebate}
-          ></SwitchTabs>
-                </div>
-          
-
-        <div class="mt-10 w-100">
-          
-        <div className="cost-info flex-col flex-wrap justify-stretch py-0 px-0">
-
-        <div className="bg-white p-0 rounded-xl">
-          <h3><b>System Overview</b></h3>
-        {selectedPanel && (
-        
-        <h5>The solar system size selected is <b>{sysSize}</b></h5>
-        )}
-          {selectedBattery && (
-          <h5>The battery size selected is: <b>{selectedBattery.size} kWh</b></h5>
-          )}
+            panels={panels}
+            selectedPanel={selectedPanel}
+            setSelectedPanel={setSelectedPanel}
+            inverters={inverters}
+            selectedInverter={selectedInverter}
+            setSelectedInverter={setSelectedInverter}
+            additionalSelectedInverter={additionalSelectedInverter}
+            setAdditionalSelectedInverter={setAdditionalSelectedInverter}
+            numberPanels={numberPanels}
+            setNumberPanels={setNumberPanels}
+            sysSize={sysSize}
+            battery={battery}
+            selectedBattery={selectedBattery}
+            setSelectedBattery={setSelectedBattery}
+            deposit={deposit}
+            setDeposit={setDeposit}
+            paymentMethod={paymentMethod}
+            selectedPaymentMethod={selectedPaymentMethod}
+            setSelectedPaymentMethod={setSelectedPaymentMethod}
+            quantities={quantities} 
+            handleChange={handleChange} 
+            totalSum={totalSum}
+            extras={extras}
+            batteryRebate={batteryRebate}
+            setBatteryRebate={setBatteryRebate}
+            plentiTerm={plentiTerm}
+            setPlentiTerm={setPlentiTerm}
+          />
         </div>
+
+        <div className="w-1/2 space-y-4">
+          <div className="bg-white p-4 rounded-xl">
+            <h3><b>System Overview</b></h3>
+            {selectedPanel && (
+              <h5>The solar system size selected is <b>{sysSize}</b></h5>
+            )}
+            {selectedBattery && (
+              <h5>The battery size selected is: <b>{selectedBattery.size} kWh</b></h5>
+            )}
+          </div>
+
           {selectedInverter && (
-          <div className="mt-10 pt-4 bg-white p-0 rounded-xl">
-        <h3><b>Pricing Breakdown</b></h3>
-        <div className="grid grid-cols-3 grid-rows-3 pb-2 auto-cols-max auto-rows-max m-auto">
+            <div className="bg-white p-4 rounded-xl">
+              <h3><b>Pricing Breakdown</b></h3>
+              <div className="grid grid-cols-3 grid-rows-3 pb-2 auto-cols-max auto-rows-max m-auto">
+                <h5 className="col-span-2 pb-2">Total System Cost Before Rebates: </h5>
+                <h5 className="text-gray-400"><b>{totalsystemcost}</b></h5>
+                <h5 className="col-span-2">STC Rebate Amount: </h5>
+                <h5><b>{Intl.NumberFormat("en-US", options).format(rebateamount)}</b></h5>
 
-          <h5 className="col-span-2 pb-2">Total System Cost Before Rebates: </h5>
-          <h5 className="text-gray-400"><b>{totalsystemcost}</b></h5>
-          <h5 className="col-span-2">STC Rebate Amount: </h5>
-          <h5 className=""><b>{Intl.NumberFormat("en-US", options).format(rebateamount)}</b></h5>
+                {selectedBattery && (
+                  <>
+                    <h5 className="col-span-2">NSW 2024 Battery Rebate: </h5>
+                    <h5><b>{Intl.NumberFormat("en-US", options).format(batteryRebate)}</b></h5>
+                  </>
+                )}
 
-          {selectedBattery && (
-            <>
-          <h5 className="col-span-2">NSW 2024 Battery Rebate: </h5>
-          <h5 className=""><b>{Intl.NumberFormat("en-US", options).format(batteryRebate)}</b></h5>
-          </>
-         )}
+                <h5 className="col-span-2">Net System Cost After Rebates: </h5>
+                <h5 className="text-emerald-500"><b>{finalCost}</b></h5>
+              </div>
+            </div>
+          )}
 
-          <h5 className="col-span-2 ">Net System Cost After Rebates: </h5>
-          <h5 className="text-emerald-500"><b>{finalCost}</b></h5>
-          </div>
-          </div>
-  )}
-            {selectedPaymentMethod && ( 
-          <div className="mt-10 pt-4 bg-white p-0 rounded-xl">
-        <h3><b>Payment Plan Breakdown</b></h3>
-        <div className="grid grid-cols-3 grid-rows-3 pb-2 auto-cols-max auto-rows-max m-auto">
-          <h5 className="col-span-2 pb-2">Deposit:</h5>
-            <h5> <b>{Intl.NumberFormat("en-US", options).format(deposit)}</b></h5>
-          <h5 className="col-span-2 pb-2">Payment Plan Approval Amount: </h5>
-            <h5> <b>{Intl.NumberFormat("en-US", options).format(residualpayment)}</b></h5>
-          <h5 className="col-span-2">Term (months): </h5>
-          <h5><b>{selectedPaymentMethod ? selectedPaymentMethod.months : 0}</b></h5>
-          <h5 className="col-span-2 pb-2">Estimated Weekly Payment: </h5>
-            <h5 className="text-emerald-500"> <b>{Intl.NumberFormat("en-US", options).format(weeklypayment)}</b></h5>
-            <h5 className="col-span-2 pb-2">Supply Agreement Total: </h5>
-            <h5> <b>{Intl.NumberFormat("en-US", options).format(agreementTotal)}</b></h5>
-            <h5 className="col-span-2">Effective Interest Rate Versus Cash: </h5>
-            <h5><b>{effInterestRate.toFixed(1)}%</b></h5>
-          </div>
-          </div>
+          {selectedPaymentMethod && (
+            <div className="bg-white p-4 rounded-xl">
+              <h3><b>Payment Plan Breakdown</b></h3>
+              <div className="grid grid-cols-3 grid-rows-3 pb-2 auto-cols-max auto-rows-max m-auto">
+                <h5 className="col-span-2 pb-2">Deposit:</h5>
+                <h5><b>{Intl.NumberFormat("en-US", options).format(deposit)}</b></h5>
+                <h5 className="col-span-2 pb-2">Payment Plan Approval Amount: </h5>
+                <h5><b>{Intl.NumberFormat("en-US", options).format(residualpayment)}</b></h5>
+                <h5 className="col-span-2">Term (months): </h5>
+                <h5><b>
+                  {selectedPaymentMethod?.isPlenti 
+                    ? plentiTerm?.months || 'Select Term'
+                    : selectedPaymentMethod?.months || 0}
+                </b></h5>
+                <h5 className="col-span-2 pb-2">Estimated Weekly Payment: </h5>
+                <h5 className="text-emerald-500"><b>{Intl.NumberFormat("en-US", options).format(weeklypayment)}</b></h5>
+                <h5 className="col-span-2 pb-2">Supply Agreement Total: </h5>
+                <h5><b>{Intl.NumberFormat("en-US", options).format(agreementTotal)}</b></h5>
+              </div>
+            </div>
           )}
         </div>
-      
-          </div>
-          </div>
+      </div>
     </div>
   );
 }
