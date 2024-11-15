@@ -166,17 +166,17 @@ const panels = [
       cost: 0,
       watts: 0,
     },
+    {
+      id: 2,
+      panelbrand: 'LONGI 440W - LR5-54HTH-440M',
+      cost: 646,
+      watts: 440,
+    },
       {
         id: 1,
         panelbrand: 'AIKO 470W - AIKO-A470-MAH54Mw',
         cost: 724,
         watts: 470,
-      },
-      {
-        id: 2,
-        panelbrand: 'LONGI 440W - LR5-54HTH-440M',
-        cost: 646,
-        watts: 440,
       },
 
 ]
