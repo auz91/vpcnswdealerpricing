@@ -157,15 +157,16 @@ function App() {
   }, [selectedPaymentMethod, plentiTerm, deposit, agreementTotal]);
 
   return (
-    <div className="App">
-      <div className="flex items-center flex-col flex-wrap pt-10 text-5xl">
-        <h1>Virtual Power Co Pricing Tool</h1>
-        <h3>NSW Residential Pricing </h3>
-        <h5>November 2024</h5>
+    <div className="App bg-[#f5f5f5] min-h-screen">
+      <div className="flex items-center flex-col pt-16 pb-12">
+        <h1 className="text-4xl font-light text-gray-900 mb-2">Virtual Power Co</h1>
+        <h3 className="text-xl font-light text-gray-600">NSW Residential Pricing</h3>
+        <h5 className="text-sm font-light text-gray-500 mt-1">November 2024</h5>
       </div>
 
-      <div className="flex flex-row w-full p-4 gap-4">
-        <div className="w-1/2">
+      <div className="flex flex-row max-w-[1800px] mx-auto px-8 gap-8">
+        {/* Left Column - Configuration */}
+        <div className="w-1/2 bg-white rounded-2xl shadow-sm">
           <SwitchTabs 
             panels={panels}
             selectedPanel={selectedPanel}
@@ -197,57 +198,91 @@ function App() {
           />
         </div>
 
-        <div className="w-1/2 space-y-4">
-          <div className="bg-white p-4 rounded-xl">
-            <h3><b>System Overview</b></h3>
+        {/* Right Column - Summary */}
+        <div className="w-1/2 space-y-6">
+          {/* System Overview Card */}
+          <div className="bg-white rounded-2xl shadow-sm p-6">
+            <h3 className="text-xl font-medium text-gray-900 mb-4">System Overview</h3>
             {selectedPanel && (
-              <h5>The solar system size selected is <b>{sysSize}</b></h5>
+              <div className="text-gray-700 mb-3">
+                System Size: <span className="font-medium text-gray-900">{sysSize}</span>
+              </div>
             )}
             {selectedBattery && (
-              <h5>The battery size selected is: <b>{selectedBattery.size} kWh</b></h5>
+              <div className="text-gray-700">
+                Battery Capacity: <span className="font-medium text-gray-900">{selectedBattery.size} kWh</span>
+              </div>
             )}
           </div>
 
+          {/* Pricing Breakdown Card */}
           {selectedInverter && (
-            <div className="bg-white p-4 rounded-xl">
-              <h3><b>Pricing Breakdown</b></h3>
-              <div className="grid grid-cols-3 grid-rows-3 pb-2 auto-cols-max auto-rows-max m-auto">
-                <h5 className="col-span-2 pb-2">Total System Cost Before Rebates: </h5>
-                <h5 className="text-gray-400"><b>{totalsystemcost}</b></h5>
-                <h5 className="col-span-2">STC Rebate Amount: </h5>
-                <h5><b>{Intl.NumberFormat("en-US", options).format(rebateamount)}</b></h5>
-
+            <div className="bg-white rounded-2xl shadow-sm p-6">
+              <h3 className="text-xl font-medium text-gray-900 mb-4">Pricing Breakdown</h3>
+              <div className="space-y-3">
+                <div className="flex justify-between items-center">
+                  <span className="text-gray-700">Total System Cost</span>
+                  <span className="text-gray-400 font-medium">{totalsystemcost}</span>
+                </div>
+                <div className="flex justify-between items-center">
+                  <span className="text-gray-700">STC Rebate</span>
+                  <span className="font-medium text-gray-900">
+                    {Intl.NumberFormat("en-US", options).format(rebateamount)}
+                  </span>
+                </div>
                 {selectedBattery && (
-                  <>
-                    <h5 className="col-span-2">NSW 2024 Battery Rebate: </h5>
-                    <h5><b>{Intl.NumberFormat("en-US", options).format(batteryRebate)}</b></h5>
-                  </>
+                  <div className="flex justify-between items-center">
+                    <span className="text-gray-700">NSW Battery Rebate</span>
+                    <span className="font-medium text-gray-900">
+                      {Intl.NumberFormat("en-US", options).format(batteryRebate)}
+                    </span>
+                  </div>
                 )}
-
-                <h5 className="col-span-2">Net System Cost After Rebates: </h5>
-                <h5 className="text-emerald-500"><b>{finalCost}</b></h5>
+                <div className="flex justify-between items-center pt-3 border-t border-gray-100">
+                  <span className="text-gray-900 font-medium">Net System Cost</span>
+                  <span className="text-[#f4b942] font-medium">{finalCost}</span>
+                </div>
               </div>
             </div>
           )}
 
+          {/* Payment Plan Card */}
           {selectedPaymentMethod && (
-            <div className="bg-white p-4 rounded-xl">
-              <h3><b>Payment Plan Breakdown</b></h3>
-              <div className="grid grid-cols-3 grid-rows-3 pb-2 auto-cols-max auto-rows-max m-auto">
-                <h5 className="col-span-2 pb-2">Deposit:</h5>
-                <h5><b>{Intl.NumberFormat("en-US", options).format(deposit)}</b></h5>
-                <h5 className="col-span-2 pb-2">Payment Plan Approval Amount: </h5>
-                <h5><b>{Intl.NumberFormat("en-US", options).format(residualpayment)}</b></h5>
-                <h5 className="col-span-2">Term (months): </h5>
-                <h5><b>
-                  {selectedPaymentMethod?.isPlenti 
-                    ? plentiTerm?.months || 'Select Term'
-                    : selectedPaymentMethod?.months || 0}
-                </b></h5>
-                <h5 className="col-span-2 pb-2">Estimated Weekly Payment: </h5>
-                <h5 className="text-emerald-500"><b>{Intl.NumberFormat("en-US", options).format(weeklypayment)}</b></h5>
-                <h5 className="col-span-2 pb-2">Supply Agreement Total: </h5>
-                <h5><b>{Intl.NumberFormat("en-US", options).format(agreementTotal)}</b></h5>
+            <div className="bg-white rounded-2xl shadow-sm p-6">
+              <h3 className="text-xl font-medium text-gray-900 mb-4">Payment Plan</h3>
+              <div className="space-y-3">
+                <div className="flex justify-between items-center">
+                  <span className="text-gray-700">Deposit</span>
+                  <span className="font-medium text-gray-900">
+                    {Intl.NumberFormat("en-US", options).format(deposit)}
+                  </span>
+                </div>
+                <div className="flex justify-between items-center">
+                  <span className="text-gray-700">Payment Plan Amount</span>
+                  <span className="font-medium text-gray-900">
+                    {Intl.NumberFormat("en-US", options).format(residualpayment)}
+                  </span>
+                </div>
+                <div className="flex justify-between items-center">
+                  <span className="text-gray-700">Term</span>
+                  <span className="font-medium text-gray-900">
+                    {selectedPaymentMethod?.isPlenti 
+                      ? plentiTerm?.months || 'Select Term'
+                      : selectedPaymentMethod?.months || 0} months
+                  </span>
+                </div>
+                <div className="flex justify-between items-center">
+                  <span className="text-gray-700">Weekly Payment</span>
+                  <span className="text-[#f4b942] font-medium">
+                    {Intl.NumberFormat("en-US", options).format(weeklypayment)}
+                  </span>
+                </div>
+                <div className="flex justify-between items-center pt-3 border-t border-gray-100">
+                  <span className="text-gray-900 font-medium">Total Agreement Value</span>
+                  <span className="font-medium text-gray-900">
+                    {Intl.NumberFormat("en-US", options).format(agreementTotal)}
+                  </span>
+                </div>
               </div>
             </div>
           )}

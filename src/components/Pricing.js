@@ -4,7 +4,6 @@ import { plentiTerms } from './Data';
 
 function Deposit({ deposit, setDeposit }) {
   const handleChange = (e) => {
-    // Ensure numeric value and prevent negative numbers
     const value = Math.max(0, Number(e.target.value));
     setDeposit(value);
   };
@@ -13,38 +12,28 @@ function Deposit({ deposit, setDeposit }) {
     <input
       min="0"
       type="number"
-      className='border-2 rounded-lg flex w-100 h-10 text-center overflow-hidden'
-      value={deposit === null ? '' : deposit} // Handle initial null case better
+      className="w-full px-4 py-2 text-gray-900 border border-gray-200 rounded-lg focus:outline-none focus:border-[#f4b942] focus:ring-1 focus:ring-[#f4b942]"
+      value={deposit === null ? '' : deposit}
       onChange={handleChange}
-      placeholder="Enter deposit amount"
-      style={{ 
-        minWidth: '100px',
-        whiteSpace: 'nowrap',
-        textOverflow: 'ellipsis'
-      }}
+      placeholder="Enter amount"
     />
   );
 }
 
-function PaymentMethod({ 
-  paymentMethod, 
-  selectedPaymentMethod, 
-  setSelectedPaymentMethod,
-  plentiTerm,
-  setPlentiTerm 
-}) {
+function PaymentMethod({ paymentMethod, selectedPaymentMethod, setSelectedPaymentMethod, plentiTerm, setPlentiTerm }) {
   return (
-    <>
+    <div className="space-y-2">
       <Dropdown>
-        <Dropdown.Toggle id="dropdown-basic" className="custom-dropdown-toggle-2">
+        <Dropdown.Toggle className="w-full px-4 py-2 text-left text-gray-900 bg-white border border-gray-200 rounded-lg hover:bg-gray-50 focus:outline-none">
           {selectedPaymentMethod ? selectedPaymentMethod.method : 'Select Payment Method'} 
         </Dropdown.Toggle>
 
-        <Dropdown.Menu>
+        <Dropdown.Menu className="w-full mt-1 bg-white border border-gray-200 rounded-lg shadow-lg">
           {paymentMethod.map((method) => (
             <Dropdown.Item
               key={method.id}
               onClick={() => setSelectedPaymentMethod(method)}
+              className="px-4 py-2 text-gray-900 hover:bg-gray-50"
             >
               {method.method}
             </Dropdown.Item>
@@ -53,26 +42,25 @@ function PaymentMethod({
       </Dropdown>
 
       {selectedPaymentMethod?.isPlenti && (
-        <div className="mt-2">
-          <Dropdown>
-            <Dropdown.Toggle id="plenti-term-dropdown" className="custom-dropdown-toggle-2">
-              {plentiTerm ? `${plentiTerm.months} months` : 'Select Term'}
-            </Dropdown.Toggle>
+        <Dropdown>
+          <Dropdown.Toggle className="w-full px-4 py-2 text-left text-gray-900 bg-white border border-gray-200 rounded-lg hover:bg-gray-50 focus:outline-none">
+            {plentiTerm ? `${plentiTerm.months} months` : 'Select Term'}
+          </Dropdown.Toggle>
 
-            <Dropdown.Menu>
-              {plentiTerms.map((term) => (
-                <Dropdown.Item
-                  key={term.months}
-                  onClick={() => setPlentiTerm(term)}
-                >
-                  {term.months} months
-                </Dropdown.Item>
-              ))}
-            </Dropdown.Menu>
-          </Dropdown>
-        </div>
+          <Dropdown.Menu className="w-full mt-1 bg-white border border-gray-200 rounded-lg shadow-lg">
+            {plentiTerms.map((term) => (
+              <Dropdown.Item
+                key={term.months}
+                onClick={() => setPlentiTerm(term)}
+                className="px-4 py-2 text-gray-900 hover:bg-gray-50"
+              >
+                {term.months} months
+              </Dropdown.Item>
+            ))}
+          </Dropdown.Menu>
+        </Dropdown>
       )}
-    </>
+    </div>
   );
 }
 

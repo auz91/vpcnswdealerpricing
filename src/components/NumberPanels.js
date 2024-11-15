@@ -4,12 +4,12 @@ function NumberPanels({ numberPanels, setNumberPanels }) {
   return (
     <input
       min="0"
-      type="number"  // Ensure it's treated as a numeric input
-      className='border-2 rounded-lg flex w-100 h-10 text-center'
-      value={numberPanels}  // Control the component with React state
-      onChange={(e) => setNumberPanels(e.target.value)}  // Correctly handle changes
-      placeholder="Enter number of panels"
-    ></input>
+      type="number"
+      className="w-full px-4 py-2 text-gray-900 border border-gray-200 rounded-lg focus:outline-none focus:border-[#f4b942] focus:ring-1 focus:ring-[#f4b942]"
+      value={numberPanels}
+      onChange={(e) => setNumberPanels(e.target.value)}
+      placeholder="Enter number"
+    />
   );
 }
 

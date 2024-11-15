@@ -21,89 +21,102 @@ function SwitchTabs({
 }) 
     {
   return (
-    <Tabs
-      defaultActiveKey="Main"
-      id="fill-tab-example"
-      className="mt-3 vpctab font-bold"
-      fill
-    >
-      <Tab eventKey="Main" title="Main" className=" mb-3 border-gray-200	 border-x-2 border-b-2 rounded-b-lg">
-        
-      <div className="grid grid-cols-2 grid-rows-3 p-2 auto-cols-max auto-rows-max m-auto">
-                  
+    <div className="flex flex-col rounded-t-2xl">
+      <Tabs
+        defaultActiveKey="Main"
+        id="fill-tab-example"
+        className="mb-0"
+        fill
+      >
+        <Tab 
+          eventKey="Main" 
+          title={<span className="px-4 py-2">Main</span>} 
+          className="pt-6"
+        >
+          <div className="p-6 pt-0">
+            <div className="space-y-4">
+              <div className="flex items-center gap-4">
+                <label className="w-1/3 text-sm text-gray-700">Select Panel Model</label>
+                <div className="w-2/3">
+                  <PanelSelect panels={panels} selectedPanel={selectedPanel} setSelectedPanel={setSelectedPanel} />
+                </div>
+              </div>
 
-                  <div className="p-2 self-center">          
-                  <h5 className="pr-5 items-center">Please select a panel:</h5>
-                  </div>
-  
-                  <div className="p-2 self-center"> <PanelSelect panels={panels} selectedPanel={selectedPanel} setSelectedPanel={setSelectedPanel} /></div>
-  
-                  <div className="p-2 self-center"><h5 className="pr-5">Please select an inverter:</h5>
-        </div>
-  
-                  <div className="p-2 self-center"><InverterSelect inverters={inverters} selectedInverter={selectedInverter} setSelectedInverter={setSelectedInverter} />
-        </div>
-                  <div className="p-2 self-center"><p className="pr-5">Additional inverter (if required):</p>
-                  </div>
-  
-  
-                  <div className="p-2 self-center"><AdditionalInverterSelect inverters={inverters} additionalSelectedInverter={additionalSelectedInverter} setAdditionalSelectedInverter={setAdditionalSelectedInverter} />
-        </div>
-  
-                  <div className="p-2 self-center"><h5 className="pr-5">Select number of panels:</h5>
-        </div>
-  
-                  <div className="p-2 self-center"><NumberPanels numberPanels={numberPanels} setNumberPanels={setNumberPanels}/>
-                  </div>
-  
-                  <div className="p-2 self-center"><h5>Select a battery model: </h5>
-                  </div>
-  
-                  <div className="p-2 self-center"><BatterySelect battery={battery} selectedBattery={selectedBattery} setSelectedBattery={setSelectedBattery} />
-                  </div>
+              <div className="flex items-center gap-4">
+                <label className="w-1/3 text-sm text-gray-700">Select Inverter Model</label>
+                <div className="w-2/3">
+                  <InverterSelect inverters={inverters} selectedInverter={selectedInverter} setSelectedInverter={setSelectedInverter} />
+                </div>
+              </div>
 
-                  <div className="p-2 self-center"><h5>Eligible NSW Battery Rebate?: </h5>
-                  </div>
+              <div className="flex items-center gap-4">
+                <label className="w-1/3 text-sm text-gray-700">Additional Inverter</label>
+                <div className="w-2/3">
+                  <AdditionalInverterSelect inverters={inverters} additionalSelectedInverter={additionalSelectedInverter} setAdditionalSelectedInverter={setAdditionalSelectedInverter} />
+                </div>
+              </div>
 
-                  <div className="p-2 self-center">
-                    <BatteryRebate 
-                      batteryRebate={batteryRebate} 
-                      setBatteryRebate={setBatteryRebate}
-                      selectedBattery={selectedBattery}
+              <div className="flex items-center gap-4">
+                <label className="w-1/3 text-sm text-gray-700">Number of Panels</label>
+                <div className="w-2/3">
+                  <NumberPanels numberPanels={numberPanels} setNumberPanels={setNumberPanels}/>
+                </div>
+              </div>
+
+              <div className="flex items-center gap-4">
+                <label className="w-1/3 text-sm text-gray-700">Battery Model</label>
+                <div className="w-2/3">
+                  <BatterySelect battery={battery} selectedBattery={selectedBattery} setSelectedBattery={setSelectedBattery} />
+                </div>
+              </div>
+
+              <div className="flex items-center gap-4">
+                <label className="w-1/3 text-sm text-gray-700">Battery Rebate Eligible</label>
+                <div className="w-2/3">
+                  <BatteryRebate 
+                    batteryRebate={batteryRebate} 
+                    setBatteryRebate={setBatteryRebate}
+                    selectedBattery={selectedBattery}
+                  />
+                </div>
+              </div>
+
+              <div className="flex items-center gap-4">
+                <label className="w-1/3 text-sm text-gray-700">Deposit Amount</label>
+                <div className="w-2/3">
+                  <Deposit deposit={deposit} setDeposit={setDeposit} />
+                </div>
+              </div>
+
+              {deposit !== null && (
+                <div className="flex items-center gap-4">
+                  <label className="w-1/3 text-sm text-gray-700">Payment Method</label>
+                  <div className="w-2/3">
+                    <PaymentMethod 
+                      paymentMethod={paymentMethod} 
+                      selectedPaymentMethod={selectedPaymentMethod} 
+                      setSelectedPaymentMethod={setSelectedPaymentMethod}
+                      plentiTerm={plentiTerm}
+                      setPlentiTerm={setPlentiTerm}
                     />
                   </div>
+                </div>
+              )}
+            </div>
+          </div>
+        </Tab>
 
-  
-                  <div className="p-2 self-center"><h5>How much deposit is being paid?</h5>
-                  </div>
-  
-                  <div className="p-2 self-center"><Deposit deposit={deposit} setDeposit={setDeposit} />
-                  </div>
-                  {deposit !== null && (
-                    <>
-                      <div className="p-2 self-center"><h5>Select a payment method</h5>
-                      </div>
-  
-                      <div className="p-2 self-center">
-                        <PaymentMethod 
-                          paymentMethod={paymentMethod} 
-                          selectedPaymentMethod={selectedPaymentMethod} 
-                          setSelectedPaymentMethod={setSelectedPaymentMethod}
-                          plentiTerm={plentiTerm}
-                          setPlentiTerm={setPlentiTerm}
-                        />
-                      </div>
-                    </>
-                  )}
-                 
-  
-                  </div>
-
-      </Tab>
-      <Tab eventKey="Extras" title="Extras" className="mb-3 border-gray-200	 border-x-2 border-b-2 rounded-b-l">
-        <ExtraInputs quantities={quantities} handleChange={handleChange} totalSum={totalSum} extras={extras}/>
-      </Tab>
-    </Tabs>
+        <Tab 
+          eventKey="Extras" 
+          title={<span className="px-4 py-2">Extras</span>} 
+          className="pt-0"
+        >
+          <div className="p-6 pt-0">
+            <ExtraInputs quantities={quantities} handleChange={handleChange} totalSum={totalSum} extras={extras}/>
+          </div>
+        </Tab>
+      </Tabs>
+    </div>
   );
 }
 

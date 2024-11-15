@@ -3,15 +3,16 @@ import Dropdown from 'react-bootstrap/Dropdown';
 function PanelSelect({ panels, selectedPanel, setSelectedPanel }) {
   return (
     <Dropdown>
-      <Dropdown.Toggle id="dropdown-basic"  className="custom-dropdown-toggle">
+      <Dropdown.Toggle className="w-full px-4 py-2 text-left text-gray-900 bg-white border border-gray-200 rounded-lg hover:bg-gray-50 focus:outline-none">
         {selectedPanel ? selectedPanel.panelbrand : 'Select Panel'} 
       </Dropdown.Toggle>
 
-      <Dropdown.Menu>
+      <Dropdown.Menu className="w-full mt-1 bg-white border border-gray-200 rounded-lg shadow-lg">
         {panels.map((panel) => (
           <Dropdown.Item
             key={panel.id}
-            onClick={() => setSelectedPanel(panel)}  // Update state in App.js on click
+            onClick={() => setSelectedPanel(panel)}
+            className="px-4 py-2 text-gray-900 hover:bg-gray-50"
           >
             {panel.panelbrand}
           </Dropdown.Item>
@@ -24,15 +25,16 @@ function PanelSelect({ panels, selectedPanel, setSelectedPanel }) {
 function InverterSelect({ inverters, selectedInverter, setSelectedInverter }) {
   return (
     <Dropdown>
-      <Dropdown.Toggle id="dropdown-basic"  className="custom-dropdown-toggle">
+      <Dropdown.Toggle className="w-full px-4 py-2 text-left text-gray-900 bg-white border border-gray-200 rounded-lg hover:bg-gray-50 focus:outline-none">
         {selectedInverter ? selectedInverter.model : 'Select Inverter'} 
       </Dropdown.Toggle>
 
-      <Dropdown.Menu>
+      <Dropdown.Menu className="w-full mt-1 bg-white border border-gray-200 rounded-lg shadow-lg">
         {inverters.map((inverter) => (
           <Dropdown.Item
             key={inverter.id}
-            onClick={() => setSelectedInverter(inverter)}  // Update state in App.js on click
+            onClick={() => setSelectedInverter(inverter)}
+            className="px-4 py-2 text-gray-900 hover:bg-gray-50"
           >
             {inverter.model}
           </Dropdown.Item>
@@ -45,15 +47,16 @@ function InverterSelect({ inverters, selectedInverter, setSelectedInverter }) {
 function AdditionalInverterSelect({ inverters, additionalSelectedInverter, setAdditionalSelectedInverter }) {
   return (
     <Dropdown>
-      <Dropdown.Toggle id="dropdown-basic"  className="custom-dropdown-toggle">
+      <Dropdown.Toggle className="w-full px-4 py-2 text-left text-gray-900 bg-white border border-gray-200 rounded-lg hover:bg-gray-50 focus:outline-none">
         {additionalSelectedInverter ? additionalSelectedInverter.model : 'Select Inverter'} 
       </Dropdown.Toggle>
 
-      <Dropdown.Menu>
+      <Dropdown.Menu className="w-full mt-1 bg-white border border-gray-200 rounded-lg shadow-lg">
         {inverters.map((inverter) => (
           <Dropdown.Item
             key={inverter.id}
-            onClick={() => setAdditionalSelectedInverter(inverter)}  // Update state in App.js on click
+            onClick={() => setAdditionalSelectedInverter(inverter)}
+            className="px-4 py-2 text-gray-900 hover:bg-gray-50"
           >
             {inverter.model}
           </Dropdown.Item>
@@ -66,15 +69,16 @@ function AdditionalInverterSelect({ inverters, additionalSelectedInverter, setAd
 function BatterySelect({ battery, selectedBattery, setSelectedBattery }) {
   return (
     <Dropdown>
-      <Dropdown.Toggle id="dropdown-basic"  className="custom-dropdown-toggle">
+      <Dropdown.Toggle className="w-full px-4 py-2 text-left text-gray-900 bg-white border border-gray-200 rounded-lg hover:bg-gray-50 focus:outline-none">
         {selectedBattery ? selectedBattery.brand : 'Select Battery'} 
       </Dropdown.Toggle>
 
-      <Dropdown.Menu>
+      <Dropdown.Menu className="w-full mt-1 bg-white border border-gray-200 rounded-lg shadow-lg">
         {battery.map((battery) => (
           <Dropdown.Item
             key={battery.id}
-            onClick={() => setSelectedBattery(battery)}  // Update state in App.js on click
+            onClick={() => setSelectedBattery(battery)}
+            className="px-4 py-2 text-gray-900 hover:bg-gray-50"
           >
             {battery.brand}
           </Dropdown.Item>

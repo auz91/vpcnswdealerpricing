@@ -2,79 +2,75 @@
 @tailwind components;
 @tailwind utilities;
 
-span {
-  font-size:10px;
+body {
+  @apply bg-[#f5f5f5] text-gray-900;
 }
 
-.vpcborder {
-  border-color:#EDBC73;
-  border-width:1px;
-}
-
-.nav-link.active {
-  background-color: #EDBC73 !important;  /* Use !important to override default Bootstrap styles */
-  color: rgb(0, 0, 0) !important;  /* Optional: changing text color for better readability */
+/* Tab styling */
+.nav-tabs {
+  @apply border-b-0 bg-gray-100 !important;
+  margin: 0 !important;
+  padding: 0 !important;
 }
 
 .nav-link {
-  background-color: #FFFFF !important;  /* Use !important to override default Bootstrap styles */
-  color: rgb(0, 0, 0) !important;  /* Optional: changing text color for better readability */
-  border-width: 2px;
+  @apply text-gray-900 bg-transparent border-0
+         hover:bg-[#f4b942]/10 transition-all duration-200 
+         font-medium text-sm !important;
+  padding: 0.75rem 1.5rem !important;
+  margin: 0 !important;
+  border-radius: 0 !important;
 }
 
-.vpcbg {
-  background-color:#EDBC73;
+.nav-link.active {
+  @apply text-gray-900 bg-white !important;
+  font-weight: 500 !important;
+}
+
+/* Dropdown styling */
+.dropdown {
+  position: relative !important;
+}
+
+.dropdown-menu {
+  @apply w-full !important;
+  max-height: 400px !important;
+  overflow-y: auto !important;
+  position: absolute !important;
+  z-index: 1000 !important;
+}
+
+.dropdown-menu.show {
+  display: block !important;
 }
 
 .dropdown-toggle {
-  white-space:pre-wrap!important;
+  @apply text-gray-900 !important;
+  white-space: normal !important;
+  min-height: 40px;
+  display: flex !important;
+  align-items: center !important;
 }
 
-.custom-dropdown-toggle {
-    border-color: #EDBC73 !important; /* example green color */
-    background-color: #ffffff !important; /* example green color */
-    color: rgb(0, 0, 0) !important;
-    padding: 8px 16px !important;
-    border-radius: 0.5rem !important;
-    border-width: 2px !important;
-    width:100%;
-    text-align:left;
-    text-wrap:wrap;
+.dropdown-item {
+  @apply text-gray-900 whitespace-normal !important;
+  min-height: 40px;
+  display: flex !important;
+  align-items: center !important;
+}
 
-  }
+/* Rest of existing styles */
+.custom-dropdown-toggle,
+.custom-dropdown-toggle-2 {
+  @apply w-full px-4 py-2 text-left text-gray-900 bg-white border border-gray-200 rounded-lg hover:bg-gray-50 focus:outline-none !important;
+}
 
-  .custom-dropdown-toggle-2 {
-    border-color: #EDBC73 !important; /* example green color */
-    background-color: #EDBC73 !important; /* example green color */
-    color: rgb(0, 0, 0) !important;
-    padding: 8px 16px !important;
-    border-radius: 0.5rem !important;
-    border-width: 2px !important;
-    width:100%;
-    text-align:left;
-    text-wrap:wrap;
+input[type="number"] {
+  @apply appearance-none;
+}
 
-  }
-
-  .custom-dropdown-toggle:hover {
-    border-color: #000000 !important; /* example green color */
-    background-color: #EDBC73  !important; /* example green color */
-    color: rgb(0, 0, 0) !important;
-    padding: 8px 16px !important;
-    border-radius: 0.5rem !important;
-    border-width: 2px !important;
-  }
-
-  .custom-dropdown-toggle-2:hover {
-    border-color: #000000 !important; /* example green color */
-    background-color: #ffdca8  !important; /* example green color */
-    color: rgb(0, 0, 0) !important;
-    padding: 8px 16px !important;
-    border-radius: 0.5rem !important;
-    border-width: 2px !important;
-  }
-
-  .thin-line {
-    height: 1px; /* or 2px if you need it slightly thicker */
-    background-color: black; /* or any color you prefer */
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  @apply appearance-none;
+  margin: 0;
 }
