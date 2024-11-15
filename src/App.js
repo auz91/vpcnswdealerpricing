@@ -157,16 +157,18 @@ function App() {
   }, [selectedPaymentMethod, plentiTerm, deposit, agreementTotal]);
 
   return (
-    <div className="App bg-[#f5f5f5] min-h-screen">
-      <div className="flex items-center flex-col pt-16 pb-12">
-        <h1 className="text-4xl font-light text-gray-900 mb-2">Virtual Power Co</h1>
-        <h3 className="text-xl font-light text-gray-600">NSW Residential Pricing</h3>
+    <div className="App bg-[#f5f5f5] min-h-screen pb-16 md:pb-24">
+      {/* Header */}
+      <div className="flex items-center flex-col pt-8 md:pt-16 pb-6 md:pb-12 px-4">
+        <h1 className="text-3xl md:text-4xl font-light text-gray-900 mb-2 text-center">Virtual Power Co</h1>
+        <h3 className="text-lg md:text-xl font-light text-gray-600 text-center">NSW Residential Pricing</h3>
         <h5 className="text-sm font-light text-gray-500 mt-1">November 2024</h5>
       </div>
 
-      <div className="flex flex-row max-w-[1800px] mx-auto px-8 gap-8">
-        {/* Left Column - Configuration */}
-        <div className="w-1/2 bg-white rounded-2xl shadow-sm">
+      {/* Main content - Adjusted max-width and column ratios */}
+      <div className="flex flex-col lg:flex-row max-w-[1400px] mx-auto px-4 md:px-8 gap-4 md:gap-8">
+        {/* Left Column - Configuration - Made wider */}
+        <div className="w-full lg:w-3/5 bg-white rounded-2xl shadow-sm">
           <SwitchTabs 
             panels={panels}
             selectedPanel={selectedPanel}
@@ -198,18 +200,18 @@ function App() {
           />
         </div>
 
-        {/* Right Column - Summary */}
-        <div className="w-1/2 space-y-6">
+        {/* Right Column - Summary - Made narrower */}
+        <div className="w-full lg:w-2/5 space-y-4 md:space-y-6">
           {/* System Overview Card */}
-          <div className="bg-white rounded-2xl shadow-sm p-6">
-            <h3 className="text-xl font-medium text-gray-900 mb-4">System Overview</h3>
+          <div className="bg-white rounded-2xl shadow-sm p-4 md:p-6">
+            <h3 className="text-lg md:text-xl font-medium text-gray-900 mb-4">System Overview</h3>
             {selectedPanel && (
-              <div className="text-gray-700 mb-3">
+              <div className="text-sm md:text-base text-gray-700 mb-3">
                 System Size: <span className="font-medium text-gray-900">{sysSize}</span>
               </div>
             )}
             {selectedBattery && (
-              <div className="text-gray-700">
+              <div className="text-sm md:text-base text-gray-700">
                 Battery Capacity: <span className="font-medium text-gray-900">{selectedBattery.size} kWh</span>
               </div>
             )}
@@ -217,28 +219,28 @@ function App() {
 
           {/* Pricing Breakdown Card */}
           {selectedInverter && (
-            <div className="bg-white rounded-2xl shadow-sm p-6">
-              <h3 className="text-xl font-medium text-gray-900 mb-4">Pricing Breakdown</h3>
+            <div className="bg-white rounded-2xl shadow-sm p-4 md:p-6">
+              <h3 className="text-lg md:text-xl font-medium text-gray-900 mb-4">Pricing Breakdown</h3>
               <div className="space-y-3">
-                <div className="flex justify-between items-center">
+                <div className="flex justify-between items-center text-sm md:text-base">
                   <span className="text-gray-700">Total System Cost</span>
                   <span className="text-gray-400 font-medium">{totalsystemcost}</span>
                 </div>
-                <div className="flex justify-between items-center">
+                <div className="flex justify-between items-center text-sm md:text-base">
                   <span className="text-gray-700">STC Rebate</span>
-                  <span className="font-medium text-gray-900">
+                  <span className="font-medium text-green-600">
                     {Intl.NumberFormat("en-US", options).format(rebateamount)}
                   </span>
                 </div>
                 {selectedBattery && (
-                  <div className="flex justify-between items-center">
+                  <div className="flex justify-between items-center text-sm md:text-base">
                     <span className="text-gray-700">NSW Battery Rebate</span>
-                    <span className="font-medium text-gray-900">
+                    <span className="font-medium text-green-600">
                       {Intl.NumberFormat("en-US", options).format(batteryRebate)}
                     </span>
                   </div>
                 )}
-                <div className="flex justify-between items-center pt-3 border-t border-gray-100">
+                <div className="flex justify-between items-center pt-3 border-t border-gray-100 text-sm md:text-base">
                   <span className="text-gray-900 font-medium">Net System Cost</span>
                   <span className="text-[#f4b942] font-medium">{finalCost}</span>
                 </div>
@@ -248,22 +250,22 @@ function App() {
 
           {/* Payment Plan Card */}
           {selectedPaymentMethod && (
-            <div className="bg-white rounded-2xl shadow-sm p-6">
-              <h3 className="text-xl font-medium text-gray-900 mb-4">Payment Plan</h3>
+            <div className="bg-white rounded-2xl shadow-sm p-4 md:p-6">
+              <h3 className="text-lg md:text-xl font-medium text-gray-900 mb-4">Payment Plan</h3>
               <div className="space-y-3">
-                <div className="flex justify-between items-center">
+                <div className="flex justify-between items-center text-sm md:text-base">
                   <span className="text-gray-700">Deposit</span>
                   <span className="font-medium text-gray-900">
                     {Intl.NumberFormat("en-US", options).format(deposit)}
                   </span>
                 </div>
-                <div className="flex justify-between items-center">
+                <div className="flex justify-between items-center text-sm md:text-base">
                   <span className="text-gray-700">Payment Plan Amount</span>
                   <span className="font-medium text-gray-900">
                     {Intl.NumberFormat("en-US", options).format(residualpayment)}
                   </span>
                 </div>
-                <div className="flex justify-between items-center">
+                <div className="flex justify-between items-center text-sm md:text-base">
                   <span className="text-gray-700">Term</span>
                   <span className="font-medium text-gray-900">
                     {selectedPaymentMethod?.isPlenti 
@@ -271,13 +273,13 @@ function App() {
                       : selectedPaymentMethod?.months || 0} months
                   </span>
                 </div>
-                <div className="flex justify-between items-center">
+                <div className="flex justify-between items-center text-sm md:text-base">
                   <span className="text-gray-700">Weekly Payment</span>
                   <span className="text-[#f4b942] font-medium">
                     {Intl.NumberFormat("en-US", options).format(weeklypayment)}
                   </span>
                 </div>
-                <div className="flex justify-between items-center pt-3 border-t border-gray-100">
+                <div className="flex justify-between items-center pt-3 border-t border-gray-100 text-sm md:text-base">
                   <span className="text-gray-900 font-medium">Total Agreement Value</span>
                   <span className="font-medium text-gray-900">
                     {Intl.NumberFormat("en-US", options).format(agreementTotal)}

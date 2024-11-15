@@ -3,19 +3,20 @@ import Dropdown from 'react-bootstrap/Dropdown';
 import { plentiTerms } from './Data';
 
 function Deposit({ deposit, setDeposit }) {
-  const handleChange = (e) => {
-    const value = Math.max(0, Number(e.target.value));
-    setDeposit(value);
+  const handleDepositChange = (e) => {
+    const value = e.target.value;
+    if (value === '' || /^\d*\.?\d*$/.test(value)) {
+      setDeposit(value === '' ? '' : Number(value));
+    }
   };
 
   return (
     <input
-      min="0"
-      type="number"
+      type="text"
       className="w-full px-4 py-2 text-gray-900 border border-gray-200 rounded-lg focus:outline-none focus:border-[#f4b942] focus:ring-1 focus:ring-[#f4b942]"
       value={deposit === null ? '' : deposit}
-      onChange={handleChange}
-      placeholder="Enter amount"
+      onChange={handleDepositChange}
+      placeholder="Enter deposit amount"
     />
   );
 }
