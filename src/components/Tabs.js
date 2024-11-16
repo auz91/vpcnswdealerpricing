@@ -66,7 +66,13 @@ function SwitchTabs({
               <div className="flex items-center gap-4">
                 <label className="w-1/3 text-sm text-gray-700">Battery Model</label>
                 <div className="w-2/3">
-                  <BatterySelect battery={battery} selectedBattery={selectedBattery} setSelectedBattery={setSelectedBattery} />
+                  <BatterySelect 
+                    battery={battery} 
+                    selectedBattery={selectedBattery} 
+                    setSelectedBattery={setSelectedBattery}
+                    setBatteryRebate={setBatteryRebate}
+                    batteryRebate={batteryRebate}
+                  />
                 </div>
               </div>
 

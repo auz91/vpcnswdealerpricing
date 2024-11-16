@@ -66,7 +66,17 @@ function AdditionalInverterSelect({ inverters, additionalSelectedInverter, setAd
   );
 }
 
-function BatterySelect({ battery, selectedBattery, setSelectedBattery }) {
+function BatterySelect({ battery, selectedBattery, setSelectedBattery, setBatteryRebate, batteryRebate }) {
+  const handleBatteryChange = (battery) => {
+    setSelectedBattery(battery);
+    
+    // If there's an existing battery rebate, recalculate it with the new battery size
+    if (batteryRebate > 0) {
+      const newRebateAmount = battery.size * 80 * 1.7;
+      setBatteryRebate(newRebateAmount);
+    }
+  };
+
   return (
     <Dropdown>
       <Dropdown.Toggle className="w-full px-4 py-2 text-left text-gray-900 bg-white border border-gray-200 rounded-lg hover:bg-gray-50 focus:outline-none">
@@ -77,7 +87,7 @@ function BatterySelect({ battery, selectedBattery, setSelectedBattery }) {
         {battery.map((battery) => (
           <Dropdown.Item
             key={battery.id}
-            onClick={() => setSelectedBattery(battery)}
+            onClick={() => handleBatteryChange(battery)}
             className="px-4 py-2 text-gray-900 hover:bg-gray-50"
           >
             {battery.brand}
