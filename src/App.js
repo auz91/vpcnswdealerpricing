@@ -10,6 +10,8 @@ import { Deposit, PaymentMethod, BatteryRebate } from './components/Pricing';
 import { SwitchTabs } from './components/Tabs';
 import { extras } from './components/Extras.js';
 import ExtraInputs from './components/ExtraInputs.js';
+import { pricingVersions } from './components/Data';
+import { VersionSelect } from './components/VersionSelect';
 
 
 function App() {
@@ -38,6 +40,9 @@ function App() {
   const [deposit, setDeposit] = useState(null);
   const [selectedPaymentMethod, setSelectedPaymentMethod] = useState(null);
   const [plentiTerm, setPlentiTerm] = useState(null);
+  const [selectedVersion, setSelectedVersion] = useState(
+    pricingVersions.find(v => v.isActive) || pricingVersions[0]
+  );
 
   // Derived calculations
   const sysSize = selectedPanel ? [numberPanels * selectedPanel.watts/1000 + 'kW'] : 0;
@@ -58,7 +63,7 @@ function App() {
 
   // Calculate STC rebates
   const rebates = selectedPanel ? 
-    (selectedPanel.watts * parseInt(numberPanels) * 1.3762 * 7 / 1000 * 39.40) : 0;
+    (selectedPanel.watts * parseInt(numberPanels) * 1.3762 * selectedVersion.stcYear / 1000 * 39.40) : 0;
   const rebateamount = Math.floor(rebates);
 
   // Calculate raw system cost
@@ -162,7 +167,13 @@ function App() {
       <div className="flex items-center flex-col pt-8 md:pt-16 pb-6 md:pb-12 px-4">
         <h1 className="text-3xl md:text-4xl font-light text-gray-900 mb-2 text-center">Virtual Power Co</h1>
         <h3 className="text-lg md:text-xl font-light text-gray-600 text-center">NSW Residential Pricing</h3>
-        <h5 className="text-sm font-light text-gray-500 mt-1">November 2024</h5>
+        <div className="flex items-center gap-2">
+          <VersionSelect 
+            versions={pricingVersions}
+            selectedVersion={selectedVersion}
+            setSelectedVersion={setSelectedVersion}
+          />
+        </div>
       </div>
 
       {/* Main content - Adjusted max-width and column ratios */}

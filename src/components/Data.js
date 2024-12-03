@@ -289,5 +289,22 @@ const plentiTerms = [
     { months: 144, interestRate: 7.65 },
 ];
 
-export { inverters, panels, battery, paymentMethod, plentiTerms};
+const pricingVersions = [
+  {
+    id: 1,
+    name: "November 2024",
+    stcYear: 7,
+    isActive: false,
+    isHidden: false
+  },
+  {
+    id: 2,
+    name: "December 2024",
+    stcYear: 6,
+    isActive: true,
+    isHidden: false
+  }
+];
+
+export { inverters, panels, battery, paymentMethod, plentiTerms, pricingVersions };
   
