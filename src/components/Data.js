@@ -174,9 +174,9 @@ const panels = [
     },
       {
         id: 1,
-        panelbrand: 'AIKO 470W - AIKO-A470-MAH54Mw',
-        cost: 724,
-        watts: 470,
+        panelbrand: 'Tindo 430W - Walara 430 G3P',
+        cost: 750,
+        watts: 430,
       },
 
 ]
@@ -295,11 +295,18 @@ const pricingVersions = [
     name: "November 2024",
     stcYear: 7,
     isActive: false,
-    isHidden: false
+    isHidden: true
   },
   {
     id: 2,
     name: "December 2024",
+    stcYear: 6,
+    isActive: false,
+    isHidden: true,
+  },
+  {
+    id: 3,
+    name: "January 2025",
     stcYear: 6,
     isActive: true,
     isHidden: false
