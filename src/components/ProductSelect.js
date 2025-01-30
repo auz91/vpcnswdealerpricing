@@ -70,10 +70,14 @@ function BatterySelect({ battery, selectedBattery, setSelectedBattery, setBatter
   const handleBatteryChange = (battery) => {
     setSelectedBattery(battery);
     
-    // If there's an existing battery rebate, recalculate it with the new battery size
+    // Recalculate battery rebate if eligible
     if (batteryRebate > 0) {
-      const newRebateAmount = battery.size * 80 * 1.7;
-      setBatteryRebate(newRebateAmount);
+      if (battery.size > 28) {
+        setBatteryRebate(0); // Disable rebate if over 28kWh
+      } else {
+        const newRebateAmount = battery.size * 80 * 1.7;
+        setBatteryRebate(newRebateAmount);
+      }
     }
   };
 

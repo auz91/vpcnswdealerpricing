@@ -75,9 +75,14 @@ function BatteryRebate({ batteryRebate, setBatteryRebate, selectedBattery }) {
   
   const handleRebateChange = (eligible) => {
     if (eligible && selectedBattery) {
-      // Calculate rebate: Battery Size x 80 x 1.7
-      const rebateAmount = selectedBattery.size * 80 * 1.7;
-      setBatteryRebate(rebateAmount);
+      // Check if battery size exceeds 28kWh
+      if (selectedBattery.size > 28) {
+        setBatteryRebate(0);
+      } else {
+        // Calculate rebate: Battery Size x 80 x 1.7
+        const rebateAmount = selectedBattery.size * 80 * 1.7;
+        setBatteryRebate(rebateAmount);
+      }
     } else {
       setBatteryRebate(0);
     }
@@ -90,8 +95,12 @@ function BatteryRebate({ batteryRebate, setBatteryRebate, selectedBattery }) {
       </Dropdown.Toggle>
 
       <Dropdown.Menu>
-        <Dropdown.Item onClick={() => handleRebateChange(true)}>
-          Yes
+        <Dropdown.Item 
+          onClick={() => handleRebateChange(true)}
+          disabled={selectedBattery?.size > 28}
+          className={selectedBattery?.size > 28 ? 'text-gray-400 cursor-not-allowed' : ''}
+        >
+          Yes {selectedBattery?.size > 28 && '(Max 28kWh)'}
         </Dropdown.Item>
         <Dropdown.Item onClick={() => handleRebateChange(false)}>
           No
